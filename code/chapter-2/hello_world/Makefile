@@ -6,6 +6,7 @@ BPFCODE = bpf_program
 
 BPFTOOLS = /kernel-src/samples/bpf
 BPFLOADER = $(BPFTOOLS)/bpf_load.c
+BPFHELPER = /kernel-src/tools/testing/selftests/bpf/trace_helpers.c
 
 CCINCLUDE += -I/kernel-src/tools/testing/selftests/bpf
 
@@ -42,8 +43,8 @@ build: ${BPFCODE.c} ${BPFLOADER}
 	$(CLANG) -O2 -target bpf -c $(BPFCODE:=.c) $(CCINCLUDE) -o ${BPFCODE:=.o}
 
 bpfload: build
-	clang $(CFLAGS) -o $(EXECABLE) -lelf $(LOADINCLUDE) $(LIBRARY_PATH) $(BPFSO) \
-        $(BPFLOADER) loader.c
+	clang $(CFLAGS) $(CCINCLUDE) -o $(EXECABLE) -lelf $(LOADINCLUDE) $(LIBRARY_PATH) $(BPFSO) \
+        $(BPFLOADER) $(BPFHELPER) loader.c
 
 $(EXECABLE): bpfload
 
