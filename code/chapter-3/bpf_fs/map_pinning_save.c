@@ -18,6 +18,9 @@ int main(int argc, char **argv) {
     return -1;
   }
 
+  printf("fd: %d\n", fd);
+  printf("fd from map_data: %d\n", map_data[0].fd);
+
   key = 1, value = 1234;
   added = bpf_map_update_elem(fd, &key, &value, BPF_ANY);
   if (added < 0) {
